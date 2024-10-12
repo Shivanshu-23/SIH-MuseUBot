@@ -1,0 +1,100 @@
+/* App.css */
+
+/* Navbar Styles */
+*{
+  margin: 0;
+  padding: 0;
+}
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  padding: 10px;
+  color: white;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.navbar-theme {
+  cursor: pointer;
+}
+
+.navbar .burger-menu {
+  display: none;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.navbar .burger-menu div {
+  width: 25px;
+  height: 3px;
+  background-color: white;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+  .navbar-links {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    background-color: #333;
+    position: absolute;
+    top: 60px;
+    right: 10px;
+    padding: 10px;
+  }
+
+  .navbar-links.show {
+    display: flex;
+  }
+
+  .navbar .burger-menu {
+    display: flex;
+  }
+}
+
+/* Centering Cards */
+.card-container {
+  gap: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 50px;
+}
+
+.card {
+  background-color: #f0f0f0;
+  width: 300px; 
+  height: 100px;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.card:hover {
+  transform: scale(1.05); /* Slight zoom effect */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* Add a more pronounced shadow */
+}
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+  }
+}
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
