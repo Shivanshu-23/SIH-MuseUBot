@@ -1,0 +1,37 @@
+version: "3.1"
+
+nlu:
+- intent: greet
+  examples: |
+    - hello
+    - hi there
+    - hey
+    - good morning
+    - good evening
+
+- intent: bye
+  examples: |
+    - Goodbye
+    - bye
+    - cu
+    - see you later
+    - fuck off
+    - you are useless
+
+- intent: book_ticket
+  examples: |
+    - I want to book a ticket for the museum
+    - Can I get a ticket for the museum?
+    - How do I book a ticket for [today](date)?
+
+- intent: check_availability
+  examples: |
+    - Is there any ticket available for [tomorrow](date)?
+    - Are there any tickets left for [today](date)?
+    - Can I book a ticket for [next week](date)?
+
+- intent: provide_date
+  examples: |
+    - [April 14th](date)
+    - [next Monday](date)
+    - [tomorrow](date)

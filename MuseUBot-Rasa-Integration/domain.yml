@@ -1,0 +1,59 @@
+version: "3.1"
+
+intents:
+  - greet
+  - book_ticket
+  - check_availability
+  - bye
+
+entities:
+  - date
+  - time
+
+slots:
+  date:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: date
+  time:
+    type: text
+    mappings:
+      - type: from_entity
+        entity: time
+
+responses:
+  utter_greet:
+  - text: "Hello! How can I assist you today?"
+
+  utter_ask_date:
+  - text: "When would you like to visit the museum?"
+
+  utter_ask_time:
+  - text: "What time works best for you?"
+
+  utter_ticket_status:
+  - text: "Tickets are available for the chosen date."
+
+  utter_ticket_confirmation:
+  - text: "Your ticket has been booked successfully!"
+
+  utter_goodbye:
+  - text: "Goodbye! Have a great day!"
+
+  utter_iamabot:
+  - text: "I am a bot, here to assist you with booking museum tickets."
+
+  utter_bye:
+  - text: "Bye! Take care!"  # Added this response
+
+actions:
+  - action_check_availability
+  - action_ask_payment
+  - action_process_payment
+
+forms:
+  book_ticket_form:
+    required_slots:
+      - date
+      - time

@@ -1,0 +1,24 @@
+version: "3.1"
+
+stories:
+- story: greet user
+  steps:
+  - intent: greet
+  - action: utter_greet
+
+- story: book a ticket
+  steps:
+  - intent: book_ticket
+  - action: action_check_availability
+  - active_loop: book_ticket_form
+
+- story: check ticket availability
+  steps:
+  - intent: check_availability
+  - action: action_check_availability
+  - action: utter_ticket_status
+
+- story: say goodbye
+  steps:
+  - intent: bye
+  - action: utter_bye
