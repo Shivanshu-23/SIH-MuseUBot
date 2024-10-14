@@ -71,11 +71,12 @@ Ensure that you have the following installed on your machine:
    cd SIH-MuseUBot
    ```
 
-
+---
 
 ## **Backend Setup (Flask)**
 
-   If manually install dependencies:
+
+1.  Manually install dependencies:
 
    ```bash
    pip install flask mysql-connector-python flask-cors
@@ -206,4 +207,8 @@ Ensure that you have the following installed on your machine:
 Contributions are welcome! Please submit a pull request for any improvements or bug fixes.
 
 ---
+
 ---
+```
+
+You can copy the content above and use it as your `README.md` file in your project directory.
