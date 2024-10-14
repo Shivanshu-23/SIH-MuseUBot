@@ -211,4 +211,3 @@ Contributions are welcome! Please submit a pull request for any improvements or 
 ---
 ```
 
-You can copy the content above and use it as your `README.md` file in your project directory.
