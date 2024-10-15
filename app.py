@@ -38,7 +38,7 @@ def signup():
     if not (username and email and password):
         return jsonify({'error': 'All fields are required.'}), 400
 
-    # Hash the password before storing it
+    # Hash the password before storing
     hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())#gen hashed pass from bcrypt salt
 
     try:
