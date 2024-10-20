@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import '../Styles/TicketBooking.css'
+import '../Styles/TicketBooking.css';
 
-// State, City, and Museum data
 const data = {
   "California": {
     cities: ["Los Angeles", "San Francisco", "San Diego"],
@@ -28,29 +27,62 @@ function TicketBooking() {
   const [visitDate, setVisitDate] = useState('');
   const [visitTime, setVisitTime] = useState('');
   const [numPeople, setNumPeople] = useState(1);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
-  // Handle state selection
   const handleStateChange = (e) => {
     setSelectedState(e.target.value);
     setSelectedCity('');
     setSelectedMuseum('');
   };
 
-  // Handle city selection
   const handleCityChange = (e) => {
     setSelectedCity(e.target.value);
     setSelectedMuseum('');
   };
 
-  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Booking confirmed for ${selectedMuseum} in ${selectedCity}, ${selectedState} on ${visitDate} at ${visitTime} for ${numPeople} people.`);
+    
+    const bookingData = {
+      state: selectedState,
+      city: selectedCity,
+      museum: selectedMuseum,
+      date: visitDate,
+      time: visitTime,
+      people: numPeople
+    };
+
+    // Send booking data to Flask backend
+    fetch('http://localhost:5000/booking', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(bookingData),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          setSuccess(data.message);
+          setError('');
+        } else {
+          setError(data.error || 'Something went wrong');
+          setSuccess('');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setError('Failed to submit the booking');
+        setSuccess('');
+      });
   };
 
   return (
     <div className="ticket-booking-container">
       <h1>Museum Ticket Booking</h1>
+      {error && <div className="error-message">{error}</div>}
+      {success && <div className="success-message">{success}</div>}
       <form onSubmit={handleSubmit} className="booking-form">
         {/* Select State */}
         <div className="form-group">
