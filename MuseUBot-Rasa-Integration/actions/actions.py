@@ -1,45 +1,90 @@
-from rasa_sdk import Action, Tracker, FormValidationAction
-from rasa_sdk.events import SlotSet
-from rasa_sdk.executor import CollectingDispatcher
 from typing import Any, Text, Dict, List
+from rasa_sdk import Action, Tracker
+from rasa_sdk.executor import CollectingDispatcher
+from rasa_sdk.events import SlotSet
+
+
+class ActionExtractDetails(Action):
+    def name(self) -> Text:
+        return "action_extract_details"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        state = tracker.get_slot('state')
+        city = tracker.get_slot('city')
+        date = tracker.get_slot('date')
+
+        missing_slots = []
+        if not state:
+            missing_slots.append("state")
+        if not city:
+            missing_slots.append("city")
+        if not date:
+            missing_slots.append("date")
+
+        if missing_slots:
+            dispatcher.utter_message(text=f"Please provide the following details: {', '.join(missing_slots)}")
+            return []
+
+        dispatcher.utter_message(text=f"Details provided - State: {state}, City: {city}, Date: {date}")
+        return [SlotSet("state", state), SlotSet("city", city), SlotSet("date", date)]
 
 class ActionCheckAvailability(Action):
-    def name(self) -> str:
+    def name(self) -> Text:
         return "action_check_availability"
 
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        state = tracker.get_slot('state')
+        city = tracker.get_slot('city')
         date = tracker.get_slot('date')
-        if date:
-            dispatcher.utter_message(text=f"Tickets are available for {date}.")
+
+        # Example: Query the database based on slots
+        available_museums = query_database(state, city, date)
+
+        if available_museums:
+            message = f"Available museums in {city}, {state} on {date}: {', '.join(available_museums)}"
         else:
-            dispatcher.utter_message(text="Please provide a date for ticket booking.")
+            message = f"Sorry, no museums are available in {city}, {state} on {date}."
+
+        dispatcher.utter_message(text=message)
         return []
 
-class ActionAskPayment(Action):
-    def name(self) -> str:
-        return "action_ask_payment"
+def query_database(state, city, date):
+    # Dummy function to simulate database query
+    # Replace this with actual database access code
+    return ["Museum A", "Museum B", "Museum C"]
 
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-        dispatcher.utter_message(text="Please provide your payment details.")
+class ActionProcessBooking(Action):
+    def name(self) -> Text:
+        return "action_process_booking"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        state = tracker.get_slot('state')
+        city = tracker.get_slot('city')
+        date = tracker.get_slot('date')
+        museum = tracker.get_slot('museum')  # Assuming museum slot is set after user selects one
+
+        if not state or not city or not date or not museum:
+            dispatcher.utter_message(text="Please provide the state, city, date, and museum to process the booking.")
+            return []
+
+        # Example: Process the booking
+        booking_confirmation = process_booking(state, city, date, museum)
+
+        if booking_confirmation:
+            message = f"Your booking for {museum} in {city}, {state} on {date} has been confirmed!"
+        else:
+            message = "Sorry, there was an issue processing your booking. Please try again."
+
+        dispatcher.utter_message(text=message)
         return []
 
-class ActionProcessPayment(Action):
-    def name(self) -> str:
-        return "action_process_payment"
-
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-        dispatcher.utter_message(text="Payment successful. Your ticket is booked!")
-        return []
-
-class ValidateBookTicketForm(FormValidationAction):
-    def name(self) -> str:
-        return "validate_book_ticket_form"
-
-    async def required_slots(
-        self,
-        domain_slots: List[Text],
-        dispatcher: CollectingDispatcher,
-        tracker: Tracker,
-        domain: Dict[Text, Any],
-    ) -> List[Text]:
-        return ["date", "time"]
+def process_booking(state, city, date, museum):
+    # Dummy function to simulate booking process
+    # Replace this with actual booking processing code
+    return True
