@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import MySQLdb
+import stripe
 
 app = Flask(_name_)
 CORS(app)  # Enable Cross-Origin Resource Sharing for all routes
@@ -224,7 +225,27 @@ def get_museums():
             cursor.close()
         if conn:
             conn.close()
+# Set your Stripe secret key (ensure this is set correctly)
+stripe.api_key = 'replace with stripe secret key'  # or replace with 'your_secret_key'
+# Endpoint for creating a PaymentIntent
+@app.route('/create-payment', methods=['POST'])
+def create_payment():
+    try:
+        data = request.get_json()
+        amount = data.get('amount')
 
+        # Create a PaymentIntent with the specified amount
+        intent = stripe.PaymentIntent.create(
+            amount=amount * 100,  # Stripe accepts amount in smallest currency unit (cents)
+            currency='usd',
+        )
+        
+        # Return the client_secret from the Payment Intent
+        return jsonify({
+            'clientSecret': intent['client_secret']
+        })
+    except Exception as e:
+        return jsonify(error=str(e)), 403
 # Run the Flask application
 if _name_ == '_main_':
     app.run(debug=True)
