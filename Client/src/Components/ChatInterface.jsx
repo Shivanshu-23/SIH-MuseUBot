@@ -52,12 +52,14 @@ function ChatInterface() {
         <div className="chat-container">
             <div className="chat-window">
                 <div className="chat-header">
-                    <button
-                        onClick={handleResetConversation}
-                        className="reset-button"
-                    >
-                        Reset Conversation
-                    </button>
+                   
+                        <button
+                            onClick={handleResetConversation}
+                            className="reset-button"
+                        >
+                            Reset Conversation
+                        </button>
+                   
 
                     <h2>Museum Chat</h2>
                 </div>
