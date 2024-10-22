@@ -52,6 +52,13 @@ function ChatInterface() {
         <div className="chat-container">
             <div className="chat-window">
                 <div className="chat-header">
+                    <button
+                        onClick={handleResetConversation}
+                        className="reset-button"
+                    >
+                        Reset Conversation
+                    </button>
+
                     <h2>Museum Chat</h2>
                 </div>
                 <div className="chat-body">
@@ -76,12 +83,6 @@ function ChatInterface() {
                         Send
                     </button>
                 </form>
-                <button
-                    onClick={handleResetConversation}
-                    className="reset-button"
-                >
-                    Reset Conversation
-                </button>
             </div>
         </div>
     );
