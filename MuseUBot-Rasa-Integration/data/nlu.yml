@@ -18,7 +18,6 @@ nlu:
     - How do I book a ticket for [Kolkata](city) in [West Bengal](state) on [next Monday](date)?
     - Can I get tickets for [Chennai](city) in [Tamil Nadu](state) on [Sunday](date)?
     - I want to reserve tickets in [Rajasthan](state) for [Jaipur](city) on [August 15th](date).
-
 - intent: inquire_availability
   examples: |
     - Are there any tickets available for [today](date)?
@@ -72,3 +71,10 @@ nlu:
     - who are you?
     - what can you do?
     - what are you?
+
+- intent: reset_conversation
+  examples: |
+    - reset
+    - restart
+    - start over
+    - clear everything

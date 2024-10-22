@@ -2,6 +2,7 @@ from typing import Any, Text, Dict, List
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
+from rasa_sdk.events import AllSlotsReset, Restarted
 
 
 class ActionExtractDetails(Action):
@@ -14,6 +15,9 @@ class ActionExtractDetails(Action):
         state = tracker.get_slot('state')
         city = tracker.get_slot('city')
         date = tracker.get_slot('date')
+
+        # Debug statements to check slot values
+        print(f"State: {state}, City: {city}, Date: {date}")
 
         missing_slots = []
         if not state:
@@ -88,3 +92,11 @@ def process_booking(state, city, date, museum):
     # Dummy function to simulate booking process
     # Replace this with actual booking processing code
     return True
+
+class ActionResetConversation(Action):
+    def name(self):
+        return "action_reset_conversation"
+
+    def run(self, dispatcher, tracker, domain):
+        dispatcher.utter_message(text="Conversation has been reset!!")
+        return [AllSlotsReset(), Restarted()]

@@ -25,17 +25,19 @@ function ChatInterface() {
         setInputValue("");
     };
 
+    // Handle reset conversation
+    const handleResetConversation = () => {
+        socket.emit("user_message", "/reset_conversation");
+    };
+
     // Listen for bot response
     useEffect(() => {
         const handleBotResponse = (data) => {
-            let botResponse = "";
-            data.forEach((item) => {
-                botResponse += item.text + " ";
-            });
-            setMessages((prevMessages) => [
-                ...prevMessages,
-                { sender: "bot", text: botResponse },
-            ]);
+            const newMessages = data.map((item) => ({
+                sender: "bot",
+                text: item.text,
+            }));
+            setMessages((prevMessages) => [...prevMessages, ...newMessages]);
         };
 
         socket.on("bot_response", handleBotResponse);
@@ -74,6 +76,12 @@ function ChatInterface() {
                         Send
                     </button>
                 </form>
+                <button
+                    onClick={handleResetConversation}
+                    className="reset-button"
+                >
+                    Reset Conversation
+                </button>
             </div>
         </div>
     );

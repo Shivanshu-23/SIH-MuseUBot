@@ -12,9 +12,6 @@ stories:
       - state: "Maharashtra"
       - city: "Mumbai"
       - date: "December 25th"
-  - action: action_check_availability
-  - action: utter_ticket_status
-  - action: action_process_booking
   - action: utter_confirmation
 
 - story: user checks availability
@@ -28,11 +25,7 @@ stories:
   - action: action_check_availability
   - action: utter_ticket_status
 
-- story: user provides incomplete details
-  steps:
-  - intent: book_ticket
-  - action: action_extract_details
-  - action: utter_ask_missing_details
+
 
 - story: user provides state
   steps:
@@ -65,3 +58,9 @@ stories:
   steps:
   - intent: goodbye
   - action: utter_goodbye
+
+- story: reset conversation
+  steps:
+  - intent: reset_conversation
+  - action: action_reset_conversation
+  - action: utter_reset

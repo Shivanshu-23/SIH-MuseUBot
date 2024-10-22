@@ -10,6 +10,7 @@ intents:
   - thank_you
   - goodbye
   - bot_challenge
+  - reset_conversation
 
 entities:
   - state
@@ -18,7 +19,7 @@ entities:
 
 slots:
   state:
-    type: list
+    type: text
     mappings:
       - type: from_entity
         entity: state
@@ -55,7 +56,11 @@ responses:
   utter_ask_missing_details:
   - text: "Please provide the missing details: state, city, and date."
 
+  utter_reset:
+  - text: "The conversation has been reset. How can I assist you further?"
+
 actions:
   - action_check_availability
   - action_process_booking
   - action_extract_details
+  - action_reset_conversation
