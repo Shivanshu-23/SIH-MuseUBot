@@ -1,0 +1,17 @@
+{
+  "lookup": {
+    "eJyLrq6NBQAEOAGx": "action_listen",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3xEohKT8/O74kMzk7taS2NhYAltYd/A==": "action_check_availability",
+    "eJyNzkEKg0AMBdCr5ABS2u1cRWSIaaBhxpliUkEG726gxS51lwf/f9K3rYP2nnmJSCa1BGjfIxacOMAPWdS4ePajPHtGitMCjLWmaEKJbbu2RC+mFHFByThKFlu9p7maeoGcAfrH7T508ETjA2p/nbwx7FEWTdY=": "utter_ticket_status",
+    "eJytjlEKwjAQRK+yByhSf3OVUsI2LrgkTSS7KUjo3V2x6K+gf/PgzTBT3wfot0qbx6BcsoP+Cj7jSg4OSCxK2dwmVM3hbKgOllKiVw6RdP9uKVwpRI8bcsKFE+vdepKKihWCoYPpfBrnAS6o9AbRD/10o6lSPVz/XG3y7wPzA1h0e5U=": "action_process_booking",
+    "eJy9jlEKwjAQRK+yByiiv7lKKUsaF10Sk5LdFCT07qYY9FdQ/JsH84YZ6zZAXTKtaJ1yigbqM2C0NzLQIbAoxdYtQrl1ODZUA3NKHpWdJ90+W3JXch7tajnYmQPrvXkSkkoTXEMD4+lwnAY4W6UXiL7pqxtFlXLv4r5a5L8HOiw5ORLB3eR4+fWH6QFtdape": "utter_confirmation",
+    "eJzFkNEKwjAMRX+lHzBEX/srY5QsRg3r2tGkAxn797U49FVQ9C2H3HtzSbusjVmmRLMDVI7BmuUxuAAjWbODZ1EKRZuFUtFwKKjW9DEOThkH0vW9JLwRDg5mYA89e9Z78YmPKsWABa1pT4dj15gzKD1B9EUf1ciqlHatq6lZfltghylFJBFXnRyu/3gCxnDhNEJdfPt+twEy0Nef": "action_listen",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3xEohPT8/JakytbY2FgAh+hxX": "utter_goodbye",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3xEohPT8/JakytZaAKaUlJalF8TDFuE2JBQCMqTcN": "action_listen",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3xEohM6+wNLMoNT6xLDEzJzEpMyezpLK2NhYAt0whxQ==": "action_check_availability",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3xEohM6+wNLMoNT6xLDEzJzEpMyezpLKWOCOTM1KTs1E1Eml8LAAJSkai": "utter_ticket_status",
+    "eJytjMEJwzAQBFtRAalArYRwnMVBFivnRFoZgnDvEdgf//zIbwdm5963W+jvYqtoIhaPoe9DXF8WwwEZlebDbdXKcOADGQP801BMdFVknZDB73YtmZ6W5vPxL/lGWhEizUapVLZ6Nfz4AZkvaWQ=": "action_listen",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3xEohvSg1taS2NhYA6dwbhQ==": "utter_greet",
+    "eJyLrq7VUaguKEoti09MLsnMz7NSqIYw4vMSc1OtFKCcnMziktQ8oNrS4tQioJrMPCC3xEohvSg1taSWgBmlJSWpRfEQpbhMiAUAQvc0lw==": "action_listen"
+  }
+}
