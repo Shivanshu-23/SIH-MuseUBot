@@ -1,15 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import '../Styles/TicketAvailability.css';
+import PaymentForm from './PaymentForm'; // Import the PaymentForm component
+
 const TicketAvailability = () => {
-  // Sample data (replace this with real API data)
   const data = {
-    'California': {
-      'Los Angeles': ['LA Art Museum', 'History Museum of LA'],
-      'San Francisco': ['SF Museum of Modern Art', 'California Academy of Sciences'],
+    'Maharashtra': {
+      'Mumbai': ['Chhatrapati Shivaji Maharaj Vastu Sangrahalaya', 'Dr. Bhau Daji Lad Museum', 'Nehru Science Centre'],
+      'Pune': ['Raja Dinkar Kelkar Museum', 'National War Museum'],
     },
-    'New York': {
-      'New York City': ['Metropolitan Museum', 'Museum of Modern Art'],
-      'Buffalo': ['Buffalo History Museum', 'Buffalo Science Museum'],
+    'Delhi': {
+      'New Delhi': ['National Museum', 'Gandhi Smriti', 'Indira Gandhi National Centre for the Arts'],
+      'Delhi': ['National Gallery of Modern Art', 'Rail Museum'],
+    },
+    'Karnataka': {
+      'Bengaluru': ['Visvesvaraya Industrial and Technological Museum', 'National Gallery of Modern Art'],
+      'Mysuru': ['Mysore Palace', 'Rail Museum Mysore'],
+    },
+    'Tamil Nadu': {
+      'Chennai': ['Government Museum', 'National Art Gallery', 'MGR Film City'],
+      'Madurai': ['Gandhi Museum', 'Thirumalai Nayakkar Palace'],
+    },
+    'West Bengal': {
+      'Kolkata': ['Indian Museum', 'Science City', 'Rabindra Sarobar'],
     },
   };
 
@@ -20,8 +32,10 @@ const TicketAvailability = () => {
   const [museums, setMuseums] = useState([]);
   const [availability, setAvailability] = useState(null);
   const [visitingDate, setVisitingDate] = useState('');
-  const [visitingTime, setVisitingTime] = useState('');
   const [numVisitors, setNumVisitors] = useState(1);
+  const [selectedMuseum, setSelectedMuseum] = useState(null);
+  const [availableSlots, setAvailableSlots] = useState([]); // New state for slots
+  const [selectedSlot, setSelectedSlot] = useState(null); // New state for selected slot
 
   useEffect(() => {
     if (state) {
@@ -41,17 +55,37 @@ const TicketAvailability = () => {
 
   const checkAvailability = () => {
     let availableMuseums = [];
-    
     if (state && city && !museum) {
-      availableMuseums = data[state][city].map(m => ({ museum: m, ticketsAvailable: Math.floor(Math.random() * 50) + 1 }));
+      availableMuseums = data[state][city].map(m => ({
+        museum: m,
+        ticketsAvailable: Math.floor(Math.random() * 50) + 1,
+      }));
     } else if (state && !city) {
-      availableMuseums = Object.values(data[state]).flat().map(m => ({ museum: m, ticketsAvailable: Math.floor(Math.random() * 50) + 1 }));
+      availableMuseums = Object.values(data[state]).flat().map(m => ({
+        museum: m,
+        ticketsAvailable: Math.floor(Math.random() * 50) + 1,
+      }));
     } else if (state && city && museum) {
       const ticketsAvailable = Math.floor(Math.random() * 50) + 1;
       availableMuseums = [{ museum, ticketsAvailable }];
     }
 
     setAvailability(availableMuseums);
+  };
+
+  const bookTickets = (museum) => {
+    setSelectedMuseum(museum);
+    // Simulating available slots based on the selected museum
+    const slots = [
+      { time: '10:00 AM', price: 10 },
+      { time: '01:00 PM', price: 10 },
+      { time: '03:00 PM', price: 10 },
+    ];
+    setAvailableSlots(slots);
+  };
+
+  const proceedToPayment = (slot) => {
+    setSelectedSlot(slot); // Set the selected slot for payment
   };
 
   return (
@@ -107,17 +141,6 @@ const TicketAvailability = () => {
 
       <div className="form-group">
         <label>
-          Timing:
-          <input
-            type="time"
-            value={visitingTime}
-            onChange={(e) => setVisitingTime(e.target.value)}
-          />
-        </label>
-      </div>
-
-      <div className="form-group">
-        <label >
           Visitors:
           <input
             type="number"
@@ -130,7 +153,7 @@ const TicketAvailability = () => {
       </div>
 
       <div className='btn-container'>
-        <button onClick={checkAvailability} disabled={!state || !visitingDate || !visitingTime} className='submit-btn'>
+        <button onClick={checkAvailability} disabled={!state || !visitingDate} className='submit-btn'>
           Check Ticket Availability
         </button>
       </div>
@@ -143,6 +166,7 @@ const TicketAvailability = () => {
               {availability.map((m, idx) => (
                 <li key={idx}>
                   {m.museum}: {m.ticketsAvailable} tickets available
+                  <button onClick={() => bookTickets(m.museum)} className='slot-book-btn'>Book Now</button>
                 </li>
               ))}
             </ul>
@@ -151,6 +175,22 @@ const TicketAvailability = () => {
           )}
         </div>
       )}
+
+      {availableSlots.length > 0 && selectedMuseum && (
+        <div>
+          <h3>Available Time Slots for {selectedMuseum}</h3>
+          <ul>
+            {availableSlots.map((slot, index) => (
+              <li key={index}>
+                {slot.time} - Price: Rs {slot.price}
+                <button onClick={() => proceedToPayment(slot)} className='slot-book-btn'>Proceed to Payment</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {selectedSlot && <PaymentForm museum={selectedMuseum} slot={selectedSlot} />} {/* Pass the selected slot to the payment form */}
     </div>
   );
 };

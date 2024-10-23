@@ -1,9 +1,11 @@
-import React, { useState } from "react";
-import LogInSignup from  "./Components/LogInSignup";
+import React, { useState } from "react"; // You can keep useState if needed later
+import LogInSignup from "./Components/LogInSignup"; // Import the LogInSignup component
+import DisplayCard from "./Components/DisplayCard"; // Import the DisplayCard component
+
 function App() {
   return (
     <div>
-      <LogInSignup/>
+      <DisplayCard /> {/* Render the DisplayCard component */}
     </div>
   );
 }

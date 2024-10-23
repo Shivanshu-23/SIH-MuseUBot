@@ -1,189 +1,216 @@
-import React, { useState } from 'react';
-import '../Styles/TicketBooking.css';
+import React, { useState, useEffect } from 'react';
+import '../Styles/TicketAvailability.css';
 
-const data = {
-  "California": {
-    cities: ["Los Angeles", "San Francisco", "San Diego"],
-    museums: {
-      "Los Angeles": ["LACMA", "The Getty", "The Broad"],
-      "San Francisco": ["SFMOMA", "Asian Art Museum", "De Young Museum"],
-      "San Diego": ["San Diego Museum of Art", "USS Midway Museum", "Maritime Museum"]
-    }
-  },
-  "New York": {
-    cities: ["New York City", "Buffalo", "Rochester"],
-    museums: {
-      "New York City": ["Metropolitan Museum", "MoMA", "American Museum of Natural History"],
-      "Buffalo": ["Albright-Knox Art Gallery", "Buffalo Museum of Science"],
-      "Rochester": ["Memorial Art Gallery", "The Strong National Museum of Play"]
-    }
-  }
-};
-
-function TicketBooking() {
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedCity, setSelectedCity] = useState('');
-  const [selectedMuseum, setSelectedMuseum] = useState('');
-  const [visitDate, setVisitDate] = useState('');
-  const [visitTime, setVisitTime] = useState('');
-  const [numPeople, setNumPeople] = useState(1);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-
-  const handleStateChange = (e) => {
-    setSelectedState(e.target.value);
-    setSelectedCity('');
-    setSelectedMuseum('');
+const TicketAvailability = () => {
+  // Sample data for museums in India
+  const data = {
+    'Maharashtra': {
+      'Mumbai': ['Chhatrapati Shivaji Maharaj Vastu Sangrahalaya', 'Dr. Bhau Daji Lad Museum', 'Nehru Science Centre'],
+      'Pune': ['Raja Dinkar Kelkar Museum', 'National War Museum'],
+    },
+    'Delhi': {
+      'New Delhi': ['National Museum', 'Gandhi Smriti', 'Indira Gandhi National Centre for the Arts'],
+      'Delhi': ['National Gallery of Modern Art', 'Rail Museum'],
+    },
+    'Karnataka': {
+      'Bengaluru': ['Visvesvaraya Industrial and Technological Museum', 'National Gallery of Modern Art'],
+      'Mysuru': ['Mysore Palace', 'Rail Museum Mysore'],
+    },
+    'Tamil Nadu': {
+      'Chennai': ['Government Museum', 'National Art Gallery', 'MGR Film City'],
+      'Madurai': ['Gandhi Museum', 'Thirumalai Nayakkar Palace'],
+    },
+    'West Bengal': {
+      'Kolkata': ['Indian Museum', 'Science City', 'Rabindra Sarobar'],
+    },
   };
 
-  const handleCityChange = (e) => {
-    setSelectedCity(e.target.value);
-    setSelectedMuseum('');
-  };
+  const [state, setState] = useState('');
+  const [city, setCity] = useState('');
+  const [museum, setMuseum] = useState('');
+  const [cities, setCities] = useState([]);
+  const [museums, setMuseums] = useState([]);
+  const [availability, setAvailability] = useState(null);
+  const [visitingDate, setVisitingDate] = useState('');
+  const [visitingTime, setVisitingTime] = useState('');
+  const [numVisitors, setNumVisitors] = useState(1);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedMuseum, setSelectedMuseum] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  useEffect(() => {
+    if (state) {
+      setCities(Object.keys(data[state] || {}));
+      setMuseums([]);
+      setCity('');
+      setMuseum('');
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (city) {
+      setMuseums(data[state][city] || []);
+      setMuseum('');
+    }
+  }, [city, state]);
+
+  const checkAvailability = () => {
+    let availableMuseums = [];
     
-    const bookingData = {
-      state: selectedState,
-      city: selectedCity,
-      museum: selectedMuseum,
-      date: visitDate,
-      time: visitTime,
-      people: numPeople
-    };
+    if (state && city && !museum) {
+      availableMuseums = data[state][city].map(m => ({
+        museum: m,
+        ticketsAvailable: Math.floor(Math.random() * 50) + 1,
+        price: 100 + Math.floor(Math.random() * 401), // Price between ₹100 and ₹500
+      }));
+    } else if (state && !city) {
+      availableMuseums = Object.values(data[state]).flat().map(m => ({
+        museum: m,
+        ticketsAvailable: Math.floor(Math.random() * 50) + 1,
+        price: 100 + Math.floor(Math.random() * 401),
+      }));
+    } else if (state && city && museum) {
+      const ticketsAvailable = Math.floor(Math.random() * 50) + 1;
+      const price = 100 + Math.floor(Math.random() * 401);
+      availableMuseums = [{ museum, ticketsAvailable, price }];
+    }
 
-    // Send booking data to Flask backend
-    fetch('http://localhost:5000/booking', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(bookingData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message) {
-          setSuccess(data.message);
-          setError('');
-        } else {
-          setError(data.error || 'Something went wrong');
-          setSuccess('');
-        }
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        setError('Failed to submit the booking');
-        setSuccess('');
-      });
+    setAvailability(availableMuseums);
+  };
+
+  const bookTickets = (museum) => {
+    setSelectedMuseum(museum);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedMuseum(null);
   };
 
   return (
     <div className="ticket-booking-container">
-      <h1>Museum Ticket Booking</h1>
-      {error && <div className="error-message">{error}</div>}
-      {success && <div className="success-message">{success}</div>}
-      <form onSubmit={handleSubmit} className="booking-form">
-        {/* Select State */}
-        <div className="form-group">
-          <label htmlFor="state">Select State:</label>
-          <select
-            id="state"
-            value={selectedState}
-            onChange={handleStateChange}
-            required
-          >
-            <option value="">Select a State</option>
-            {Object.keys(data).map((state, index) => (
-              <option key={index} value={state}>
-                {state}
-              </option>
+      <h2>Check Museum Ticket Availability</h2>
+
+      <div className="form-group">
+        <label>
+          State:
+          <select value={state} onChange={(e) => setState(e.target.value)}>
+            <option value="">--Select State--</option>
+            {Object.keys(data).map((st) => (
+              <option key={st} value={st}>{st}</option>
             ))}
           </select>
-        </div>
+        </label>
+      </div>
 
-        {/* Select City */}
-        {selectedState && (
-          <div className="form-group">
-            <label htmlFor="city">Select City:</label>
-            <select
-              id="city"
-              value={selectedCity}
-              onChange={handleCityChange}
-              required
-            >
-              <option value="">Select a City</option>
-              {data[selectedState].cities.map((city, index) => (
-                <option key={index} value={city}>
-                  {city}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+      <div className="form-group">
+        <label>
+          City:
+          <select value={city} onChange={(e) => setCity(e.target.value)} disabled={!state}>
+            <option value="">--Select City--</option>
+            {cities.map((ct) => (
+              <option key={ct} value={ct}>{ct}</option>
+            ))}
+          </select>
+        </label>
+      </div>
 
-        {/* Select Museum */}
-        {selectedCity && (
-          <div className="form-group">
-            <label htmlFor="museum">Select Museum:</label>
-            <select
-              id="museum"
-              value={selectedMuseum}
-              onChange={(e) => setSelectedMuseum(e.target.value)}
-              required
-            >
-              <option value="">Select a Museum</option>
-              {data[selectedState].museums[selectedCity].map((museum, index) => (
-                <option key={index} value={museum}>
-                  {museum}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+      <div className="form-group">
+        <label>
+          Museum:
+          <select value={museum} onChange={(e) => setMuseum(e.target.value)} disabled={!city}>
+            <option value="">--Select Museum--</option>
+            {museums.map((ms) => (
+              <option key={ms} value={ms}>{ms}</option>
+            ))}
+          </select>
+        </label>
+      </div>
 
-        {/* Visit Date */}
-        <div className="form-group">
-          <label htmlFor="date">Visit Date:</label>
+      <div className="form-group">
+        <label>
+          Date:
           <input
             type="date"
-            id="date"
-            value={visitDate}
-            onChange={(e) => setVisitDate(e.target.value)}
-            required
+            value={visitingDate}
+            onChange={(e) => setVisitingDate(e.target.value)}
           />
-        </div>
+        </label>
+      </div>
 
-        {/* Visit Time */}
-        <div className="form-group">
-          <label htmlFor="time">Visit Time:</label>
+      <div className="form-group">
+        <label>
+          Timing:
           <input
             type="time"
-            id="time"
-            value={visitTime}
-            onChange={(e) => setVisitTime(e.target.value)}
-            required
+            value={visitingTime}
+            onChange={(e) => setVisitingTime(e.target.value)}
           />
-        </div>
+        </label>
+      </div>
 
-        {/* Number of People */}
-        <div className="form-group">
-          <label htmlFor="numPeople">Number of People:</label>
+      <div className="form-group">
+        <label>
+          Visitors:
           <input
             type="number"
-            id="numPeople"
-            value={numPeople}
-            onChange={(e) => setNumPeople(e.target.value)}
+            value={numVisitors}
+            onChange={(e) => setNumVisitors(e.target.value)}
             min="1"
-            required
+            max="10"
           />
-        </div>
+        </label>
+      </div>
 
-        {/* Submit Button */}
-        <button type="submit" className="submit-btn">Confirm Booking</button>
-      </form>
+      <div className='btn-container'>
+        <button onClick={checkAvailability} disabled={!state || !visitingDate || !visitingTime} className='submit-btn'>
+          Check Ticket Availability
+        </button>
+      </div>
+
+      {availability && (
+        <div>
+          <h3>Available Tickets</h3>
+          {availability.length > 0 ? (
+            <ul>
+              {availability.map((m, idx) => (
+                <li key={idx}>
+                  {m.museum}: {m.ticketsAvailable} tickets available at ₹{m.price}
+                  <button onClick={() => bookTickets(m.museum)} className='slot-book-btn'>Book Now</button>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>No museums or tickets available for the selected options.</p>
+          )}
+        </div>
+      )}
+
+      {modalVisible && selectedMuseum && (
+        <div className="modal">
+          <div className="modal-content">
+            <h3>{selectedMuseum}</h3>
+            <div className="slot-item">
+              <span>10:00 AM</span>
+              <span>Price: Rs{availability.find(m => m.museum === selectedMuseum).price}</span>
+              <button className="slot-book-btn">Book</button>
+            </div>
+            <div className="slot-item">
+              <span>01:00 PM</span>
+              <span>Price: Rs{availability.find(m => m.museum === selectedMuseum).price}</span>
+              <button className="slot-book-btn">Book</button>
+            </div>
+            <div className="slot-item">
+              <span>03:00 PM</span>
+              <span>Price: Rs{availability.find(m => m.museum === selectedMuseum).price}</span>
+              <button className="slot-book-btn">Book</button>
+            </div>
+            <button onClick={closeModal} className="close-modal-btn">Close</button>
+          </div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
-export default TicketBooking;
+export default TicketAvailability;

@@ -10,7 +10,7 @@ function ChatInterface() {
     "events": "The upcoming events include a special art exhibition on October 15th and a live history performance on October 20th.",
     "shows": "The next museum shows include 'Ancient Egypt: Secrets Revealed' at 3 PM and 'Renaissance Art Highlights' at 5 PM.",
     "hours": "The museum is open from 9 AM to 7 PM on weekdays and 10 AM to 6 PM on weekends.",
-    "tickets": "Tickets are available for $15 for adults, $10 for seniors, and free for children under 12."
+    "tickets": "Tickets are available for Rs15 for adults, Rs10 for seniors, and free for children under 12."
   };
 
   const getBotResponse = (query) => {
@@ -49,7 +49,7 @@ function ChatInterface() {
         </div>
         <div className="chat-body">
           {messages.map((message, index) => (
-            <div key={index} className={`chat-message ${message.sender}`}>
+            <div key={index} className={`chat-message Rs{message.sender}`}>
               <div className="message-text">{message.text}</div>
             </div>
           ))}

@@ -23,7 +23,7 @@ function Navbar({ onBookingHistoryClick, onAboutClick }) {
       </div>
 
       {/* Right-aligned links */}
-      <div className={`navbar-links ${isMenuOpen ? 'show' : ''}`}>
+      <div className={`navbar-links Rs{isMenuOpen ? 'show' : ''}`}>
         <a href="#" onClick={onAboutClick}>About</a>
         <a href="#" onClick={onBookingHistoryClick}>Booking History</a>
         <div className="navbar-theme" onClick={toggleTheme}>

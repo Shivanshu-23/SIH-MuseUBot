@@ -2,7 +2,7 @@ import React from 'react';
 import ShowAvailableTickets from '../Styles/ShowAvailableTickets.css'
 const ShowAvailableTickets = ({ tickets }) => {
   const handleBookTicket = (museum) => {
-    alert(`Booking ticket for ${museum.museum}`);
+    alert(`Booking ticket for Rs{museum.museum}`);
     // Add booking logic here
   };
 

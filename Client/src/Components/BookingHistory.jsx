@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../Styles/BookingHistory.css';
 
 const initialBookings = [
@@ -13,7 +13,7 @@ const initialBookings = [
       id: 'TXN12345',
       date: '2024-10-01',
       time: '11:45 AM',
-      payment: '$30.00',
+      payment: 'Rs30.00',
     },
   },
   {
@@ -27,7 +27,7 @@ const initialBookings = [
       id: 'TXN54321',
       date: '2024-09-01',
       time: '09:15 AM',
-      payment: '$20.00',
+      payment: 'Rs20.00',
     },
   },
   // Add more booking data here
@@ -82,12 +82,12 @@ function BookingHistory() {
       <div className="booking-list">
         {filteredBookings.length > 0 ? (
           filteredBookings.map((booking) => (
-            <div key={booking.id} className="booking-card">
+            <div key={booking.id} className={`booking-card ${booking.status}`}>
               <h3>{booking.museumName}</h3>
               <p>Date of Visit: {booking.visitDate}</p>
               <p>Time: {booking.visitTime}</p>
               <p>Number of Visitors: {booking.visitors}</p>
-              <p>Status: {booking.status === 'upcoming' ? 'Upcoming' : 'Past'}</p>
+              <p>Status: {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}</p>
 
               <div className="booking-actions">
                 <button onClick={() => handleDownload(booking.id)}>Download Ticket</button>

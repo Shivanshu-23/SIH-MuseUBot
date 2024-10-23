@@ -82,5 +82,22 @@
       padding: 8px 10px;
       font-size: 14px;
     }
+    /* TicketBooking.css */
+.museum-details {
+  border: 1px solid #ccc;
+  padding: 16px;
+  margin-top: 20px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.museum-details h2 {
+  color: #333;
+}
+
+.museum-details p {
+  margin: 8px 0;
+}
+
   }
   
