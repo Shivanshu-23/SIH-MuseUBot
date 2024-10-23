@@ -18,7 +18,12 @@
     "react-dom": "^18.2.0",
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.26.2",
+<<<<<<< HEAD
     "web-vitals": "^4.2.3"
+=======
+    "socket.io": "^4.8.0",
+    "socket.io-client": "^4.8.0"
+>>>>>>> 1abb8c4cb24def09a3f900d6e651977792190d75
   },
   "devDependencies": {
     "@types/react": "^18.0.27",
